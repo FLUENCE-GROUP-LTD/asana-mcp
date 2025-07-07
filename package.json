@@ -1,5 +1,5 @@
 {
-  "name": "@roychri/mcp-server-asana",
+  "name": "@fluence-group-ltd/asana-mcp",
   "publishConfig": {
     "access": "public"
   },
@@ -7,13 +7,13 @@
   "description": "MCP Server for Asana",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/roychri/mcp-server-asana.git"
+    "url": "git+https://github.com/FLUENCE-GROUP-LTD/asana-mcp.git"
   },
-  "homepage": "https://github.com/roychri/mcp-server-asana?tab=readme-ov-file#mcp-server-for-asana",
+  "homepage": "https://github.com/FLUENCE-GROUP-LTD/asana-mcp#readme",
   "main": "dist/index.js",
   "type": "module",
   "bin": {
-    "mcp-server-asana": "dist/index.js"
+    "asana-mcp": "dist/index.js"
   },
   "files": [
     "dist",
@@ -33,7 +33,7 @@
     "mcp",
     "anthropic"
   ],
-  "author": "Christian Roy",
+  "author": "Fluence Group Ltd",
   "license": "MIT",
   "devDependencies": {
     "@modelcontextprotocol/inspector": "^0.4.0",
