@@ -106,6 +106,15 @@ declare module 'asana' {
     updateWorkspace(body: any, workspaceGid: string, opts?: any): Promise<{ data: WorkspaceBase }>;
   }
 
+  export class UsersApi {
+    constructor(apiClient?: ApiClient);
+
+    getUser(userGid: string, opts?: any): Promise<{ data: UserBase }>;
+    getUsers(opts?: any): Promise<{ data: UserBase[] }>;
+    getUsersForWorkspace(workspaceGid: string, opts?: any): Promise<{ data: UserBase[] }>;
+    getUsersForTeam(teamGid: string, opts?: any): Promise<{ data: UserBase[] }>;
+  }
+
   // Base types for responses
   interface ProjectBase {
     gid: string;

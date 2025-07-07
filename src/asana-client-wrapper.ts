@@ -8,6 +8,7 @@ export class AsanaClientWrapper {
   private projectStatuses: any;
   private tags: any;
   private customFieldSettings: any;
+  private users: any;
 
   constructor(token: string) {
     const client = Asana.ApiClient.instance;
@@ -21,6 +22,7 @@ export class AsanaClientWrapper {
     this.projectStatuses = new Asana.ProjectStatusesApi();
     this.tags = new Asana.TagsApi();
     this.customFieldSettings = new Asana.CustomFieldSettingsApi();
+    this.users = new Asana.UsersApi();
   }
 
   async listWorkspaces(opts: any = {}) {
@@ -290,6 +292,26 @@ export class AsanaClientWrapper {
 
   async getTagsForWorkspace(workspace_gid: string, opts: any = {}) {
     const response = await this.tags.getTagsForWorkspace(workspace_gid, opts);
+    return response.data;
+  }
+
+  async getUsersInWorkspace(workspace_gid: string, opts: any = {}) {
+    const response = await this.users.getUsersForWorkspace(workspace_gid, opts);
+    return response.data;
+  }
+
+  async getUsersInTeam(team_gid: string, opts: any = {}) {
+    const response = await this.users.getUsersForTeam(team_gid, opts);
+    return response.data;
+  }
+
+  async getUser(user_gid: string, opts: any = {}) {
+    const response = await this.users.getUser(user_gid, opts);
+    return response.data;
+  }
+
+  async getMultipleUsers(opts: any = {}) {
+    const response = await this.users.getUsers(opts);
     return response.data;
   }
 }

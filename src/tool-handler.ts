@@ -2,7 +2,13 @@ import { Tool, CallToolRequest, CallToolResult } from "@modelcontextprotocol/sdk
 import { AsanaClientWrapper } from './asana-client-wrapper.js';
 import { validateAsanaXml } from './asana-validate-xml.js';
 
-import { listWorkspacesTool } from './tools/workspace-tools.js';
+import { 
+  listWorkspacesTool,
+  getUsersInWorkspaceTool,
+  getUsersInTeamTool,
+  getUserTool,
+  getMultipleUsersTool
+} from './tools/workspace-tools.js';
 import {
   searchProjectsTool,
   getProjectTool,
@@ -37,6 +43,10 @@ import {
 // List of all available tools
 const all_tools: Tool[] = [
   listWorkspacesTool,
+  getUsersInWorkspaceTool,
+  getUsersInTeamTool,
+  getUserTool,
+  getMultipleUsersTool,
   searchProjectsTool,
   searchTasksTool,
   getTaskTool,
@@ -63,6 +73,10 @@ const all_tools: Tool[] = [
 // List of tools that only read Asana state
 const READ_ONLY_TOOLS = [
   'asana_list_workspaces',
+  'asana_get_users_in_workspace',
+  'asana_get_users_in_team',
+  'asana_get_user',
+  'asana_get_multiple_users',
   'asana_search_projects',
   'asana_search_tasks',
   'asana_get_task',
@@ -146,7 +160,7 @@ export function tool_handler(asanaClient: AsanaClientWrapper): (request: CallToo
             };
           } catch (error) {
             // When error occurs and html_notes was provided, validate it
-            if (taskData.html_notes && error instanceof Error && [400, 500].includes(error.status)) {
+            if (taskData.html_notes && error instanceof Error && (error as any).status && [400, 500].includes((error as any).status)) {
               const xmlValidationErrors = validateAsanaXml(taskData.html_notes);
               if (xmlValidationErrors.length > 0) {
                 // Provide detailed validation errors to help the user
@@ -418,6 +432,38 @@ export function tool_handler(asanaClient: AsanaClientWrapper): (request: CallToo
         case "asana_get_tags_for_workspace": {
           const { workspace_gid, ...opts } = args;
           const response = await asanaClient.getTagsForWorkspace(workspace_gid, opts);
+          return {
+            content: [{ type: "text", text: JSON.stringify(response) }],
+          };
+        }
+
+        case "asana_get_users_in_workspace": {
+          const { workspace_gid, ...opts } = args;
+          const response = await asanaClient.getUsersInWorkspace(workspace_gid, opts);
+          return {
+            content: [{ type: "text", text: JSON.stringify(response) }],
+          };
+        }
+
+        case "asana_get_users_in_team": {
+          const { team_gid, ...opts } = args;
+          const response = await asanaClient.getUsersInTeam(team_gid, opts);
+          return {
+            content: [{ type: "text", text: JSON.stringify(response) }],
+          };
+        }
+
+        case "asana_get_user": {
+          const { user_gid, ...opts } = args;
+          const response = await asanaClient.getUser(user_gid, opts);
+          return {
+            content: [{ type: "text", text: JSON.stringify(response) }],
+          };
+        }
+
+        case "asana_get_multiple_users": {
+          const { ...opts } = args;
+          const response = await asanaClient.getMultipleUsers(opts);
           return {
             content: [{ type: "text", text: JSON.stringify(response) }],
           };
